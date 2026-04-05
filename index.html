@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Age Calculator</title>
+    <style>
+        @import url('https://googleapis.com');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        
+        body {
+            background: linear-gradient(135deg, #4203a9, #90bafc);
+            display: flex; justify-content: center; align-items: center;
+            height: 100vh; padding: 20px;
+        }
+
+        .container {
+            background: #fff; width: 100%; max-width: 600px; /* Big Box */
+            padding: 40px; border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2); text-align: center;
+        }
+
+        h1 { color: #4203a9; margin-bottom: 30px; font-size: 2.5rem; }
+
+        .input-box {
+            display: flex; gap: 10px; margin-bottom: 30px;
+            background: #eee; padding: 20px; border-radius: 10px;
+        }
+
+        input {
+            flex: 1; padding: 15px; border: none; outline: none;
+            font-size: 1.2rem; border-radius: 8px;
+        }
+
+        button {
+            padding: 15px 30px; background: #4203a9; color: #fff;
+            border: none; border-radius: 8px; font-weight: 600;
+            cursor: pointer; transition: 0.3s; font-size: 1.1rem;
+        }
+
+        button:hover { background: #330285; }
+
+        #result {
+            margin-top: 20px; font-size: 1.5rem; font-weight: 600; color: #333;
+        }
+
+        #result span { color: #4203a9; font-size: 2rem; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Age Calculator</h1>
+    <div class="input-box">
+        <input type="date" id="date">
+        <button onclick="calculateAge()">Calculate</button>
+    </div>
+    <div id="result">Select your birth date</div>
+</div>
+
+<script>
+    let userInput = document.getElementById("date");
+    userInput.max = new Date().toISOString().split("T")[0]; // Prevent future dates
+
+    function calculateAge() {
+        let birthDate = new Date(userInput.value);
+        if(!userInput.value) return alert("Please select a date");
+
+        let today = new Date();
+        let y = today.getFullYear() - birthDate.getFullYear();
+        let m = today.getMonth() - birthDate.getMonth();
+        let d = today.getDate() - birthDate.getDate();
+
+        if (m < 0 || (m === 0 && d < 0)) {
+            y--;
+            m += 12;
+        }
+        if (d < 0) {
+            let prevMonth = new Date(today.getFullYear(), today.getMonth(), 0).getDate();
+            d += prevMonth;
+            m--;
+        }
+
+        document.getElementById("result").innerHTML = 
+            `You are <span>${y}</span> years, <span>${m}</span> months, and <span>${d}</span> days old.`;
+    }
+</script>
+
+</body>
+</html>
